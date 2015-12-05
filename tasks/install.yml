@@ -5,7 +5,7 @@
   get_url:
     url: '{{ mmonit_download_url }}'
     dest: '/tmp/{{ mmonit_archive_file }}'
-    
+
 - name: Unarchive monit
   unarchive:
     src: '/tmp/{{ mmonit_archive_file }}'
@@ -16,7 +16,7 @@
   file:
     path: '/tmp/mmonit-{{ mmonit_version }}/db/mmonit.db'
     owner: '{{ mmonit_user }}'
-    
+
 - name: copy mmonit files to system
   command:
     rsync -ai '{{ item.src }}' '{{ item.dest }}'
@@ -26,7 +26,7 @@
     - src: '/tmp/mmonit-{{ mmonit_version }}/'
       dest: '{{ mmonit_home }}'
   # cannot use variable for a sudo_user parameter
-  sudo_user: mmonit
+  sudo_user: '{{ mmonit_user }}'
 
 - name: link files to conviniant places
   file:
@@ -38,4 +38,3 @@
       dest: /etc/mmonit
     - src: '{{ mmonit_home }}/logs'
       dest: /var/log/mmonit
-  
